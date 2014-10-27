@@ -1,3 +1,4 @@
 rootProject.name = 'oit.labs'
 
 include "yaskoam.oit.lab1"
+include "yaskoam.oit.lab2"
