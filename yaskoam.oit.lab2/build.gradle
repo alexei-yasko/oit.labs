@@ -1,7 +1,0 @@
-jar {
-    manifest {
-        attributes 'Main-Class': 'yaskoam.oit.lab1.Main'
-    }
-
-    from configurations.compile.collect { zipTree(it) }
-}
