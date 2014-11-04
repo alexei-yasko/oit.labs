@@ -1,35 +1,35 @@
 package yaskoam.oit.lab2.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
-/**
- * Created by alex on 11/2/14.
- */
+import yaskoam.oit.lab2.service.model.Car;
+
+@Service
 public class TransportServiceImpl implements TransportService {
 
+    @Autowired
     private HibernateTemplate hibernateTemplate;
 
-    public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-        this.hibernateTemplate = hibernateTemplate;
-    }
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    @Transactional
     public void saveCar(Car car) {
         hibernateTemplate.save(car);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    @Transactional
-    public Car getCar(String id) {
-        return hibernateTemplate.get(Car.class, id);
+    public Car getCar(String code) {
+        return hibernateTemplate.get(Car.class, code);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    @Transactional
     public List<Car> getCars() {
         return hibernateTemplate.loadAll(Car.class);
     }

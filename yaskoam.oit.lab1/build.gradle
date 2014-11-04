@@ -1,7 +1,5 @@
-jar {
-    manifest {
-        attributes 'Main-Class': 'yaskoam.oit.lab1.Main'
-    }
+apply plugin: 'gradle-one-jar'
 
-    from configurations.compile.collect { zipTree(it) }
+task fullJar(type: OneJar) {
+    mainClass = 'yaskoam.oit.lab1.Main'
 }

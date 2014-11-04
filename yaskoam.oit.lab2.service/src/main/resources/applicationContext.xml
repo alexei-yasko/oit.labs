@@ -9,6 +9,8 @@
 
     <context:property-placeholder location="classpath:/applicationContext.properties"/>
 
+    <context:component-scan base-package="yaskoam.oit.lab2.service" />
+
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${database.driver}"/>
         <property name="url" value="${database.url}"/>
@@ -19,13 +21,6 @@
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:/hibernate.cfg.xml"/>
-        <property name="hibernateProperties">
-            <value>
-                hibernate.dialect=org.hibernate.dialect.H2Dialect
-                hibernate.hbm2ddl.auto=update
-                hibernate.show_sql=true
-            </value>
-        </property>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
@@ -36,11 +31,6 @@
 
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="checkWriteOperations" value="false"/>
-    </bean>
-
-    <bean name="transportService" class="yaskoam.oit.lab2.service.TransportServiceImpl">
-        <property name="hibernateTemplate" ref="hibernateTemplate"/>
     </bean>
 
 </beans>

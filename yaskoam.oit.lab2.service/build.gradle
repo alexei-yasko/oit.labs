@@ -1,3 +1,5 @@
+apply plugin: 'gradle-one-jar'
+
 dependencies {
     compile 'javax.persistence:persistence-api:1.0.2'
 
@@ -13,4 +15,8 @@ dependencies {
     compile 'org.springframework:spring-tx:4.1.1.RELEASE'
 
     compile 'com.h2database:h2:1.4.182'
+}
+
+task fullJar(type: OneJar) {
+    mainClass = 'yaskoam.oit.lab2.service.Main'
 }
