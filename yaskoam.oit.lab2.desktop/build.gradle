@@ -1,0 +1,13 @@
+apply plugin: 'gradle-one-jar'
+
+dependencies {
+    compile project(":yaskoam.oit.lab2.service")
+
+    compile 'org.springframework:spring-core:4.1.1.RELEASE'
+    compile 'org.springframework:spring-context:4.1.1.RELEASE'
+    compile 'org.springframework:spring-beans:4.1.1.RELEASE'
+}
+
+task fullJar(type: OneJar) {
+    mainClass = 'yaskoam.oit.lab2.desktop.Main'
+}

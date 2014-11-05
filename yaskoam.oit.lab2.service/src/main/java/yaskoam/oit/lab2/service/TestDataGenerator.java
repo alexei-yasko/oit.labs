@@ -48,7 +48,7 @@ public class TestDataGenerator {
         );
     }
 
-    public static Date newDate(int year, int month, int day) {
+    private static Date newDate(int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month - 1);

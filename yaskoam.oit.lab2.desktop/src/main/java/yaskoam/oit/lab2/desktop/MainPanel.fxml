@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fx:root type="yaskoam.oit.lab2.desktop.MainPanel" xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1000.0"
+         stylesheets="/yaskoam/oit/lab2/desktop/style.css">
+
+</fx:root>
