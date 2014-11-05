@@ -5,6 +5,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.util.List;
 
 import yaskoam.oit.lab2.service.model.Car;
+import yaskoam.oit.lab2.service.model.Driver;
+import yaskoam.oit.lab2.service.model.Transportation;
 
 public class Main {
 
@@ -14,13 +16,15 @@ public class Main {
 
         TransportService service = context.getBean(TransportService.class);
 
-        Car car = new Car("1", "vw");
-        service.saveCar(car);
+        service.saveTransportations(TestDataGenerator.generateTestData());
 
         List<Car> cars = service.getCars();
         System.out.println(cars);
 
-        Car car1 = service.getCar(car.getCode());
-        System.out.println(car1);
+        List<Driver> drivers = service.getDrivers();
+        System.out.println(drivers);
+
+        List<Transportation> transportations = service.getTransportations();
+        System.out.println(transportations);
     }
 }

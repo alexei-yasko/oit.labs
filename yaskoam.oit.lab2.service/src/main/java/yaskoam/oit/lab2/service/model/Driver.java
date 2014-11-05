@@ -4,8 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity(name = "Car")
-public class Car {
+@Entity(name = "Driver")
+public class Driver {
 
     @Id
     @Column(name = "code")
@@ -14,10 +14,10 @@ public class Car {
     @Column(name = "name")
     private String name;
 
-    public Car() {
+    public Driver() {
     }
 
-    public Car(String code, String name) {
+    public Driver(String code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -32,7 +32,7 @@ public class Car {
 
     @Override
     public String toString() {
-        return "Car{" +
+        return "Driver{" +
             "code='" + code + '\'' +
             ", name='" + name + '\'' +
             '}';

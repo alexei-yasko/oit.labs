@@ -12,6 +12,8 @@
         <property name="hibernate.show_sql">true</property>
 
         <mapping class="yaskoam.oit.lab2.service.model.Car"/>
+        <mapping class="yaskoam.oit.lab2.service.model.Driver"/>
+        <mapping class="yaskoam.oit.lab2.service.model.Transportation"/>
 
     </session-factory>
 
