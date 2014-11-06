@@ -6,9 +6,9 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
 
-public class BaseComponent extends VBox implements Initializable {
+public class BaseComponent extends AnchorPane implements Initializable {
 
     protected FXMLLoader fxmlLoader;
 

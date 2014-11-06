@@ -58,4 +58,10 @@ public class TransportServiceImpl implements TransportService {
     public void saveTransportations(List<Transportation> transportations) {
         transportations.stream().forEach(this::saveTransportation);
     }
+
+    @Transactional
+    @Override
+    public void updateTransportation(Transportation transportation) {
+        hibernateTemplate.update(transportation);
+    }
 }

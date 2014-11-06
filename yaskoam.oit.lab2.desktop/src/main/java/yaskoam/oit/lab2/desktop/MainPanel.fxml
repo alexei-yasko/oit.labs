@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<fx:root type="yaskoam.oit.lab2.desktop.MainPanel" xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1000.0"
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+
+<?import yaskoam.oit.lab2.desktop.TransportationsPanel?>
+
+<fx:root type="yaskoam.oit.lab2.desktop.MainPanel" xmlns:fx="http://javafx.com/fxml/1" prefWidth="900" prefHeight="600"
          stylesheets="/yaskoam/oit/lab2/desktop/style.css">
+
+    <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <Tab text="Transportations">
+            <TransportationsPanel fx:id="transportationsPanel"/>
+        </Tab>
+
+        <Tab text="Drivers &amp; Cars">
+        </Tab>
+
+    </TabPane>
 
 </fx:root>

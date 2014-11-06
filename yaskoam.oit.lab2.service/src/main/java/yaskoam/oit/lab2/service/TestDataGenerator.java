@@ -1,8 +1,7 @@
 package yaskoam.oit.lab2.service;
 
+import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import yaskoam.oit.lab2.service.model.Car;
@@ -48,11 +47,7 @@ public class TestDataGenerator {
         );
     }
 
-    private static Date newDate(int year, int month, int day) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month - 1);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-        return calendar.getTime();
+    private static LocalDate newDate(int year, int month, int day) {
+        return LocalDate.of(year, month, day);
     }
 }

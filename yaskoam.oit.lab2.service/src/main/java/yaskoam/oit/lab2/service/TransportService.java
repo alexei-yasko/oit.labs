@@ -21,4 +21,6 @@ public interface TransportService {
     public void saveTransportation(Transportation transportation);
 
     public void saveTransportations(List<Transportation> transportations);
+
+    public void updateTransportation(Transportation transportations);
 }

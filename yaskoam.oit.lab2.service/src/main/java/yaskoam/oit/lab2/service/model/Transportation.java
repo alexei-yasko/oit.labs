@@ -1,6 +1,6 @@
 package yaskoam.oit.lab2.service.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,7 +17,7 @@ public class Transportation {
     private String number;
 
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "driver_code")
@@ -36,7 +36,7 @@ public class Transportation {
     public Transportation() {
     }
 
-    public Transportation(String number, Date date, Driver driver, Car car, double weight, double length) {
+    public Transportation(String number, LocalDate date, Driver driver, Car car, double weight, double length) {
         this.number = number;
         this.date = date;
         this.driver = driver;
@@ -49,24 +49,48 @@ public class Transportation {
         return number;
     }
 
-    public Date getDate() {
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public LocalDate getDate() {
         return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public Driver getDriver() {
         return driver;
     }
 
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
     public Car getCar() {
         return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     public double getWeight() {
         return weight;
     }
 
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
     public double getLength() {
         return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
     }
 
     @Override
