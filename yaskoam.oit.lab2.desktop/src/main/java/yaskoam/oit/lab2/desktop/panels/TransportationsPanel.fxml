@@ -18,7 +18,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 
-<fx:root type="yaskoam.oit.lab2.desktop.TransportationsPanel" xmlns:fx="http://javafx.com/fxml/1"
+<fx:root type="yaskoam.oit.lab2.desktop.panels.TransportationsPanel" xmlns:fx="http://javafx.com/fxml/1"
          stylesheets="/yaskoam/oit/lab2/desktop/style.css">
 
     <SplitPane dividerPositions="0.7" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

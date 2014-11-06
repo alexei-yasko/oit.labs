@@ -1,4 +1,4 @@
-package yaskoam.oit.lab2.desktop;
+package yaskoam.oit.lab2.desktop.panels;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -16,6 +16,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import yaskoam.oit.lab2.desktop.AppSettings;
+import yaskoam.oit.lab2.desktop.BaseComponent;
 import yaskoam.oit.lab2.service.TransportService;
 import yaskoam.oit.lab2.service.model.Transportation;
 
