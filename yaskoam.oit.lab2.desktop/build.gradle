@@ -3,9 +3,9 @@ apply plugin: 'gradle-one-jar'
 dependencies {
     compile project(":yaskoam.oit.lab2.service")
 
-    compile 'org.springframework:spring-core:4.1.1.RELEASE'
     compile 'org.springframework:spring-context:4.1.1.RELEASE'
-    compile 'org.springframework:spring-beans:4.1.1.RELEASE'
+
+    compile 'org.controlsfx:controlsfx:8.20.8'
 }
 
 task fullJar(type: OneJar) {

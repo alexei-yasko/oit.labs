@@ -6,19 +6,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
+import javafx.util.converter.DoubleStringConverter;
 import yaskoam.oit.lab2.desktop.AppSettings;
 import yaskoam.oit.lab2.desktop.BaseComponent;
 import yaskoam.oit.lab2.service.TransportService;
+import yaskoam.oit.lab2.service.model.Car;
+import yaskoam.oit.lab2.service.model.Driver;
 import yaskoam.oit.lab2.service.model.Transportation;
 
 public class TransportationsPanel extends BaseComponent {
@@ -27,8 +28,8 @@ public class TransportationsPanel extends BaseComponent {
 
     public TableColumn<Transportation, String> numberColumn;
     public TableColumn<Transportation, LocalDate> dateColumn;
-    public TableColumn<Transportation, String> driverCodeColumn;
-    public TableColumn<Transportation, String> carCodeColumn;
+    public TableColumn<Transportation, Driver> driverColumn;
+    public TableColumn<Transportation, Car> carColumn;
     public TableColumn<Transportation, Double> weightColumn;
     public TableColumn<Transportation, Double> lengthColumn;
 
@@ -36,42 +37,132 @@ public class TransportationsPanel extends BaseComponent {
 
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        transportService = AppSettings.get().getTransportService();
 
-        Callback<TableColumn<Transportation, LocalDate>, TableCell<Transportation, LocalDate>> cellFactory =
-            param -> new TextFieldTableCell<>(new StringConverter<LocalDate>() {
-                @Override
-                public String toString(LocalDate date) {
-                    return date.format(dateFormatter);
-                }
+        configureNumberColumn(numberColumn);
+        configureDateColumn(dateColumn);
+        configureDriverColumn(driverColumn);
+        configureCarColumn(carColumn);
+        configureWeightColumn(weightColumn);
+        configureLengthColumn(lengthColumn);
 
-                @Override
-                public LocalDate fromString(String string) {
-                    return LocalDate.parse(string, dateFormatter);
-                }
-            });
+        tableView.getItems().setAll(transportService.getTransportations());
+    }
 
-        numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
-
-        dateColumn.setCellFactory(cellFactory);
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        dateColumn.setOnEditCommit(event -> {
+    private void configureDateColumn(TableColumn<Transportation, LocalDate> column) {
+        column.setCellFactory(param -> new TextFieldTableCell<>(new LocalDateStringConverter()));
+        column.setCellValueFactory(new PropertyValueFactory<>("date"));
+        column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setDate(event.getNewValue());
             transportService.updateTransportation(transportation);
         });
+    }
 
-        driverCodeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDriver().getCode()));
-        carCodeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCar().getCode()));
+    private void configureNumberColumn(TableColumn<Transportation, String> column) {
+        column.setCellValueFactory(new PropertyValueFactory<>("number"));
+    }
 
-        weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
-        lengthColumn.setCellValueFactory(new PropertyValueFactory<>("length"));
+    private void configureDriverColumn(TableColumn<Transportation, Driver> column) {
+        ObservableList<Driver> drivers = FXCollections.observableArrayList(transportService.getDrivers());
+        column.setCellFactory(param -> new ComboBoxTableCell<>(new DriverStringConverter(transportService), drivers));
 
-        transportService = AppSettings.get().getTransportService();
+        column.setCellValueFactory(new PropertyValueFactory<>("driver"));
 
-        List<Transportation> transportations = transportService.getTransportations();
-        ObservableList<Transportation> observableTransportations = FXCollections.observableArrayList(transportations);
+        column.setOnEditCommit(event -> {
+            Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
+            transportation.setDriver(event.getNewValue());
+            transportService.updateTransportation(transportation);
+        });
+    }
 
-        tableView.setItems(observableTransportations);
+    private void configureCarColumn(TableColumn<Transportation, Car> column) {
+        ObservableList<Car> cars = FXCollections.observableArrayList(transportService.getCars());
+        column.setCellFactory(param -> new ComboBoxTableCell<>(new CarStringConverter(transportService), cars));
+
+        column.setCellValueFactory(new PropertyValueFactory<>("car"));
+
+        column.setOnEditCommit(event -> {
+            Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
+            transportation.setCar(event.getNewValue());
+            transportService.updateTransportation(transportation);
+        });
+    }
+
+    private void configureWeightColumn(TableColumn<Transportation, Double> column) {
+        column.setCellFactory(param -> new TextFieldTableCell<>(new DoubleStringConverter()));
+
+        column.setCellValueFactory(new PropertyValueFactory<>("weight"));
+
+        column.setOnEditCommit(event -> {
+            Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
+            transportation.setWeight(event.getNewValue());
+            transportService.updateTransportation(transportation);
+        });
+    }
+
+    private void configureLengthColumn(TableColumn<Transportation, Double> column) {
+        column.setCellFactory(param -> new TextFieldTableCell<>(new DoubleStringConverter()));
+
+        column.setCellValueFactory(new PropertyValueFactory<>("length"));
+
+        column.setOnEditCommit(event -> {
+            Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
+            transportation.setLength(event.getNewValue());
+            transportService.updateTransportation(transportation);
+        });
+    }
+
+    private class LocalDateStringConverter extends StringConverter<LocalDate> {
+
+        private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+        @Override
+        public String toString(LocalDate date) {
+            return date.format(dateFormatter);
+        }
+
+        @Override
+        public LocalDate fromString(String stringDate) {
+            return LocalDate.parse(stringDate, dateFormatter);
+        }
+    }
+
+    private class DriverStringConverter extends StringConverter<Driver> {
+
+        private TransportService transportService;
+
+        private DriverStringConverter(TransportService transportService) {
+            this.transportService = transportService;
+        }
+
+        @Override
+        public String toString(Driver driver) {
+            return driver.getCode();
+        }
+
+        @Override
+        public Driver fromString(String driverCode) {
+            return transportService.getDriver(driverCode);
+        }
+    }
+
+    private class CarStringConverter extends StringConverter<Car> {
+
+        private TransportService transportService;
+
+        private CarStringConverter(TransportService transportService) {
+            this.transportService = transportService;
+        }
+
+        @Override
+        public String toString(Car car) {
+            return car.getCode();
+        }
+
+        @Override
+        public Car fromString(String carCode) {
+            return transportService.getCar(carCode);
+        }
     }
 }

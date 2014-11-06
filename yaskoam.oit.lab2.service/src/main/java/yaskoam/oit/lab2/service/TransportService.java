@@ -16,6 +16,8 @@ public interface TransportService {
 
     List<Driver> getDrivers();
 
+    Driver getDriver(String code);
+
     List<Transportation> getTransportations();
 
     public void saveTransportation(Transportation transportation);

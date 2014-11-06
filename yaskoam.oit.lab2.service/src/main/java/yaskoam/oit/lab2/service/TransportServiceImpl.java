@@ -41,6 +41,12 @@ public class TransportServiceImpl implements TransportService {
         return hibernateTemplate.loadAll(Driver.class);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Driver getDriver(String code) {
+        return hibernateTemplate.get(Driver.class, code);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public List<Transportation> getTransportations() {

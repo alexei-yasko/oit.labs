@@ -34,9 +34,9 @@
 
                 <columns>
                     <TableColumn text="Номер" fx:id="numberColumn"/>
-                    <TableColumn text="Дата" fx:id="dateColumn" editable="true"/>
-                    <TableColumn text="Код шофёра" fx:id="driverCodeColumn"/>
-                    <TableColumn text="Код машины" fx:id="carCodeColumn"/>
+                    <TableColumn text="Дата" fx:id="dateColumn"/>
+                    <TableColumn text="Код шофёра" fx:id="driverColumn"/>
+                    <TableColumn text="Код машины" fx:id="carColumn"/>
                     <TableColumn text="Вес груза" fx:id="weightColumn"/>
                     <TableColumn text="Длина пути" fx:id="lengthColumn"/>
                 </columns>
