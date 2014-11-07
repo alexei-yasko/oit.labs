@@ -10,13 +10,13 @@ public interface TransportService {
 
     List<Car> getCars();
 
-    Car getCar(String code);
+    Car getCar(int code);
 
     void saveCar(Car car);
 
     List<Driver> getDrivers();
 
-    Driver getDriver(String code);
+    Driver getDriver(int code);
 
     List<Transportation> getTransportations();
 

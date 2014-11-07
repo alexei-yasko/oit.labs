@@ -21,7 +21,8 @@
 <fx:root type="yaskoam.oit.lab2.desktop.panels.TransportationsPanel" xmlns:fx="http://javafx.com/fxml/1"
          stylesheets="/yaskoam/oit/lab2/desktop/style.css">
 
-    <SplitPane dividerPositions="0.7" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+    <SplitPane dividerPositions="0.7" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0"
                AnchorPane.topAnchor="0.0">
 
         <AnchorPane>
@@ -45,13 +46,13 @@
         </AnchorPane>
 
         <AnchorPane minHeight="0.0" minWidth="0.0">
-            <GridPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+            <GridPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                      AnchorPane.topAnchor="0">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" percentWidth="100.0"/>
                 </columnConstraints>
 
                 <rowConstraints>
-                    <RowConstraints percentHeight="10.0" vgrow="SOMETIMES"/>
                     <RowConstraints percentHeight="10.0"/>
                     <RowConstraints percentHeight="10.0"/>
                     <RowConstraints percentHeight="10.0"/>
@@ -65,31 +66,28 @@
                 </padding>
 
                 <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
-                    <Label text="Номер перевозки"/>
-                    <TextField/>
+                    <Label text="Дата перевозки"/>
+                    <DatePicker maxWidth="Infinity" fx:id="newDateDatePicker"/>
                 </VBox>
                 <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <Label text="Дата перевозки"/>
-                    <DatePicker maxWidth="Infinity"/>
+                    <Label text="Код шофёра"/>
+                    <ComboBox maxWidth="Infinity" fx:id="newDriverComboBox"/>
                 </VBox>
                 <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
-                    <Label text="Код шофёра"/>
-                    <ComboBox maxWidth="Infinity"/>
+                    <Label text="Код машины"/>
+                    <ComboBox maxWidth="Infinity" fx:id="newCarComboBox"/>
                 </VBox>
                 <VBox GridPane.columnIndex="0" GridPane.rowIndex="3">
-                    <Label text="Код машины"/>
-                    <ComboBox maxWidth="Infinity"/>
+                    <Label text="Вес груза в тоннах"/>
+                    <TextField fx:id="newWeightTextField"/>
                 </VBox>
                 <VBox GridPane.columnIndex="0" GridPane.rowIndex="4">
-                    <Label text="Вес груза в тоннах"/>
-                    <TextField/>
+                    <Label text="Длина пути в км."/>
+                    <TextField fx:id="newLengthTextField"/>
                 </VBox>
                 <VBox GridPane.columnIndex="0" GridPane.rowIndex="5">
-                    <Label text="Длина пути в км."/>
-                    <TextField/>
-                </VBox>
-                <VBox GridPane.columnIndex="0" GridPane.rowIndex="6">
-                    <Button text="Сохранить" maxHeight="Infinity" maxWidth="Infinity" VBox.vgrow="ALWAYS"/>
+                    <Button text="Сохранить" maxHeight="Infinity" maxWidth="Infinity" VBox.vgrow="ALWAYS"
+                            onAction="#saveNewTransportation"/>
                 </VBox>
             </GridPane>
         </AnchorPane>

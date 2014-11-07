@@ -3,13 +3,15 @@ package yaskoam.oit.lab2.desktop.panels;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -17,6 +19,8 @@ import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
 import yaskoam.oit.lab2.desktop.AppSettings;
 import yaskoam.oit.lab2.desktop.BaseComponent;
+import yaskoam.oit.lab2.desktop.support.DoubleTextFieldConstraint;
+import yaskoam.oit.lab2.desktop.support.UiUtils;
 import yaskoam.oit.lab2.service.TransportService;
 import yaskoam.oit.lab2.service.model.Car;
 import yaskoam.oit.lab2.service.model.Driver;
@@ -33,10 +37,26 @@ public class TransportationsPanel extends BaseComponent {
     public TableColumn<Transportation, Double> weightColumn;
     public TableColumn<Transportation, Double> lengthColumn;
 
+    public DatePicker newDateDatePicker;
+    public ComboBox<Driver> newDriverComboBox;
+    public ComboBox<Car> newCarComboBox;
+    public TextField newWeightTextField;
+    public TextField newLengthTextField;
+
     private TransportService transportService;
+
+    private ObservableList<Transportation> transportations;
+
+    private ObservableList<Driver> drivers;
+
+    private ObservableList<Car> cars;
 
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
+        transportations = FXCollections.observableArrayList();
+        drivers = FXCollections.observableArrayList();
+        cars = FXCollections.observableArrayList();
+
         transportService = AppSettings.get().getTransportService();
 
         configureNumberColumn(numberColumn);
@@ -46,7 +66,37 @@ public class TransportationsPanel extends BaseComponent {
         configureWeightColumn(weightColumn);
         configureLengthColumn(lengthColumn);
 
-        tableView.getItems().setAll(transportService.getTransportations());
+        tableView.setItems(transportations);
+
+        newWeightTextField.textProperty().addListener(new DoubleTextFieldConstraint(newWeightTextField));
+        newLengthTextField.textProperty().addListener(new DoubleTextFieldConstraint(newWeightTextField));
+
+        newDriverComboBox.setConverter(new DriverStringConverter(transportService));
+        newDriverComboBox.setItems(drivers);
+        newCarComboBox.setConverter(new CarStringConverter(transportService));
+        newCarComboBox.setItems(cars);
+
+        actualizeData();
+    }
+
+    public void actualizeData() {
+        transportations.setAll(transportService.getTransportations());
+        drivers.setAll(transportService.getDrivers());
+        cars.setAll(transportService.getCars());
+    }
+
+    public void saveNewTransportation() {
+        LocalDate date = newDateDatePicker.getValue();
+        Driver driver = newDriverComboBox.getValue();
+        Car car = newCarComboBox.getValue();
+        double weight = UiUtils.getDoubleValue(newWeightTextField);
+        double length = UiUtils.getDoubleValue(newLengthTextField);
+
+        Transportation transportation = new Transportation(date, driver, car, weight, length);
+
+        transportService.saveTransportation(transportation);
+
+        actualizeData();
     }
 
     private void configureDateColumn(TableColumn<Transportation, LocalDate> column) {
@@ -64,11 +114,8 @@ public class TransportationsPanel extends BaseComponent {
     }
 
     private void configureDriverColumn(TableColumn<Transportation, Driver> column) {
-        ObservableList<Driver> drivers = FXCollections.observableArrayList(transportService.getDrivers());
         column.setCellFactory(param -> new ComboBoxTableCell<>(new DriverStringConverter(transportService), drivers));
-
         column.setCellValueFactory(new PropertyValueFactory<>("driver"));
-
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setDriver(event.getNewValue());
@@ -77,11 +124,8 @@ public class TransportationsPanel extends BaseComponent {
     }
 
     private void configureCarColumn(TableColumn<Transportation, Car> column) {
-        ObservableList<Car> cars = FXCollections.observableArrayList(transportService.getCars());
         column.setCellFactory(param -> new ComboBoxTableCell<>(new CarStringConverter(transportService), cars));
-
         column.setCellValueFactory(new PropertyValueFactory<>("car"));
-
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setCar(event.getNewValue());
@@ -91,9 +135,7 @@ public class TransportationsPanel extends BaseComponent {
 
     private void configureWeightColumn(TableColumn<Transportation, Double> column) {
         column.setCellFactory(param -> new TextFieldTableCell<>(new DoubleStringConverter()));
-
         column.setCellValueFactory(new PropertyValueFactory<>("weight"));
-
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setWeight(event.getNewValue());
@@ -103,9 +145,7 @@ public class TransportationsPanel extends BaseComponent {
 
     private void configureLengthColumn(TableColumn<Transportation, Double> column) {
         column.setCellFactory(param -> new TextFieldTableCell<>(new DoubleStringConverter()));
-
         column.setCellValueFactory(new PropertyValueFactory<>("length"));
-
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setLength(event.getNewValue());
@@ -119,7 +159,7 @@ public class TransportationsPanel extends BaseComponent {
 
         @Override
         public String toString(LocalDate date) {
-            return date.format(dateFormatter);
+            return date != null ? date.format(dateFormatter) : null;
         }
 
         @Override
@@ -138,12 +178,12 @@ public class TransportationsPanel extends BaseComponent {
 
         @Override
         public String toString(Driver driver) {
-            return driver.getCode();
+            return driver != null ? Integer.toString(driver.getCode()) : null;
         }
 
         @Override
         public Driver fromString(String driverCode) {
-            return transportService.getDriver(driverCode);
+            return transportService.getDriver(Integer.parseInt(driverCode));
         }
     }
 
@@ -157,12 +197,12 @@ public class TransportationsPanel extends BaseComponent {
 
         @Override
         public String toString(Car car) {
-            return car.getCode();
+            return car != null ? Integer.toString(car.getCode()) : null;
         }
 
         @Override
         public Car fromString(String carCode) {
-            return transportService.getCar(carCode);
+            return transportService.getCar(Integer.parseInt(carCode));
         }
     }
 }

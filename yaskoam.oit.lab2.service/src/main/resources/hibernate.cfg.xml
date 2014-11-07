@@ -8,7 +8,7 @@
     <session-factory>
 
         <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
-        <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
 
         <mapping class="yaskoam.oit.lab2.service.model.Car"/>

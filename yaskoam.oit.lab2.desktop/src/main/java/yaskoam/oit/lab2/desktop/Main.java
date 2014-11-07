@@ -25,8 +25,10 @@ public class Main extends Application {
         TransportService transportService = applicationContext.getBean(TransportService.class);
         AppSettings.get().setTransportService(transportService);
 
-        List<Transportation> transportations = TestDataGenerator.generateTestData();
-        transportService.saveTransportations(transportations);
+        if (transportService.getTransportations().isEmpty()) {
+            List<Transportation> transportations = TestDataGenerator.generateTestData();
+            transportService.saveTransportations(transportations);
+        }
 
         Parent root = new MainPanel();
         primaryStage.setTitle("Transportations editor");

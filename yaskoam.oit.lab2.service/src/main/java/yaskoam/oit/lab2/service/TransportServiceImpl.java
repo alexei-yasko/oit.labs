@@ -25,7 +25,7 @@ public class TransportServiceImpl implements TransportService {
 
     @Transactional(readOnly = true)
     @Override
-    public Car getCar(String code) {
+    public Car getCar(int code) {
         return hibernateTemplate.get(Car.class, code);
     }
 
@@ -43,7 +43,7 @@ public class TransportServiceImpl implements TransportService {
 
     @Transactional(readOnly = true)
     @Override
-    public Driver getDriver(String code) {
+    public Driver getDriver(int code) {
         return hibernateTemplate.get(Driver.class, code);
     }
 

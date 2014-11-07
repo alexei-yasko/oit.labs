@@ -1,20 +1,24 @@
 package yaskoam.oit.lab2.service.model;
 
-import java.time.LocalDate;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import java.time.LocalDate;
 
 @Entity(name = "Transportation")
 public class Transportation {
 
     @Id
+    @GenericGenerator(name = "increment", strategy = "increment")
+    @GeneratedValue(generator = "increment")
     @Column(name = "number")
-    private String number;
+    private int number;
 
     @Column(name = "date")
     private LocalDate date;
@@ -36,8 +40,7 @@ public class Transportation {
     public Transportation() {
     }
 
-    public Transportation(String number, LocalDate date, Driver driver, Car car, double weight, double length) {
-        this.number = number;
+    public Transportation(LocalDate date, Driver driver, Car car, double weight, double length) {
         this.date = date;
         this.driver = driver;
         this.car = car;
@@ -45,12 +48,8 @@ public class Transportation {
         this.length = length;
     }
 
-    public String getNumber() {
+    public int getNumber() {
         return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
     }
 
     public LocalDate getDate() {
