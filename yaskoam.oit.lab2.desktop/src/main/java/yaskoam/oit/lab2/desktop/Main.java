@@ -31,7 +31,7 @@ public class Main extends Application {
         }
 
         Parent root = new MainPanel();
-        primaryStage.setTitle("Transportations editor");
+        primaryStage.setTitle("Редактор перевозок");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

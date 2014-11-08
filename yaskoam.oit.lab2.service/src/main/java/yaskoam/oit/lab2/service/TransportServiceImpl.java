@@ -5,7 +5,9 @@ import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import yaskoam.oit.lab2.service.model.Car;
 import yaskoam.oit.lab2.service.model.Driver;
@@ -35,8 +37,20 @@ public class TransportServiceImpl implements TransportService {
         hibernateTemplate.save(car);
     }
 
+    @Transactional
     @Override
+    public void updateCar(Car car) {
+        hibernateTemplate.update(car);
+    }
+
+    @Transactional
+    @Override
+    public void removeCars(List<Car> cars) {
+        hibernateTemplate.deleteAll(cars);
+    }
+
     @Transactional(readOnly = true)
+    @Override
     public List<Driver> getDrivers() {
         return hibernateTemplate.loadAll(Driver.class);
     }
@@ -47,8 +61,26 @@ public class TransportServiceImpl implements TransportService {
         return hibernateTemplate.get(Driver.class, code);
     }
 
+    @Transactional
     @Override
+    public void saveDriver(Driver driver) {
+        hibernateTemplate.save(driver);
+    }
+
+    @Transactional
+    @Override
+    public void updateDriver(Driver driver) {
+        hibernateTemplate.update(driver);
+    }
+
+    @Transactional
+    @Override
+    public void removeDrivers(List<Driver> drivers) {
+        hibernateTemplate.deleteAll(drivers);
+    }
+
     @Transactional(readOnly = true)
+    @Override
     public List<Transportation> getTransportations() {
         return hibernateTemplate.loadAll(Transportation.class);
     }
@@ -69,5 +101,24 @@ public class TransportServiceImpl implements TransportService {
     @Override
     public void updateTransportation(Transportation transportation) {
         hibernateTemplate.update(transportation);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public double calculateCost(List<Transportation> transportations, double rate) {
+        List<Integer> numbers =
+            transportations.stream().map(Transportation::getNumber).collect(Collectors.toCollection(ArrayList::new));
+
+        List result = hibernateTemplate.findByNamedParam(
+            "SELECT SUM(t.weight * t.length * :rate) FROM Transportation t WHERE t.number IN (:numbers)",
+            new String[]{"rate", "numbers"}, new Object[]{rate, numbers});
+
+        return result.get(0) != null ? (double) result.get(0) : 0;
+    }
+
+    @Transactional
+    @Override
+    public void removeTransportations(List<Transportation> transportations) {
+        hibernateTemplate.deleteAll(transportations);
     }
 }

@@ -1,20 +1,25 @@
 package yaskoam.oit.lab2.desktop.panels;
 
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
 import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
 import yaskoam.oit.lab2.desktop.AppSettings;
@@ -43,6 +48,9 @@ public class TransportationsPanel extends BaseComponent {
     public TextField newWeightTextField;
     public TextField newLengthTextField;
 
+    public TextField rateTextField;
+    public TextField costTextField;
+
     private TransportService transportService;
 
     private ObservableList<Transportation> transportations;
@@ -59,14 +67,20 @@ public class TransportationsPanel extends BaseComponent {
 
         transportService = AppSettings.get().getTransportService();
 
+        tableView.setItems(transportations);
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        tableView.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.DELETE) {
+                removeTransportations(tableView.getSelectionModel().getSelectedItems());
+            }
+        });
+
         configureNumberColumn(numberColumn);
         configureDateColumn(dateColumn);
         configureDriverColumn(driverColumn);
         configureCarColumn(carColumn);
         configureWeightColumn(weightColumn);
         configureLengthColumn(lengthColumn);
-
-        tableView.setItems(transportations);
 
         newWeightTextField.textProperty().addListener(new DoubleTextFieldConstraint(newWeightTextField));
         newLengthTextField.textProperty().addListener(new DoubleTextFieldConstraint(newWeightTextField));
@@ -76,10 +90,12 @@ public class TransportationsPanel extends BaseComponent {
         newCarComboBox.setConverter(new CarStringConverter(transportService));
         newCarComboBox.setItems(cars);
 
-        actualizeData();
+        rateTextField.textProperty().addListener(new DoubleTextFieldConstraint(rateTextField));
+
+        updateData();
     }
 
-    public void actualizeData() {
+    public void updateData() {
         transportations.setAll(transportService.getTransportations());
         drivers.setAll(transportService.getDrivers());
         cars.setAll(transportService.getCars());
@@ -96,7 +112,24 @@ public class TransportationsPanel extends BaseComponent {
 
         transportService.saveTransportation(transportation);
 
-        actualizeData();
+        updateData();
+    }
+
+    public void calculateCost() {
+        double rate = UiUtils.getDoubleValue(rateTextField);
+        List<Transportation> selected = tableView.getSelectionModel().getSelectedItems();
+
+        double cost = transportService.calculateCost(selected, rate);
+
+        NumberFormat.getInstance().format(cost);
+        DecimalFormat formatter = new DecimalFormat("0.00");
+
+        costTextField.setText(formatter.format(cost));
+    }
+
+    private void removeTransportations(List<Transportation> transportations) {
+        transportService.removeTransportations(transportations);
+        updateData();
     }
 
     private void configureDateColumn(TableColumn<Transportation, LocalDate> column) {

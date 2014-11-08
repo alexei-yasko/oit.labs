@@ -16,33 +16,33 @@ public class Car {
     @Column(name = "code")
     private int code;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "model")
+    private String model;
 
     public Car() {
     }
 
-    public Car(String name) {
-        this.name = name;
+    public Car(String model) {
+        this.model = model;
     }
 
     public int getCode() {
         return code;
     }
 
-    public String getName() {
-        return name;
+    public String getModel() {
+        return model;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setModel(String name) {
+        this.model = name;
     }
 
     @Override
     public String toString() {
         return "Car{" +
             "code='" + code + '\'' +
-            ", name='" + name + '\'' +
+            ", model='" + model + '\'' +
             '}';
     }
 }

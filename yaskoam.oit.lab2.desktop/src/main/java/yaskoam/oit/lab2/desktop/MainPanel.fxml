@@ -6,18 +6,19 @@
 <?import javafx.scene.control.Tab?>
 
 <?import yaskoam.oit.lab2.desktop.panels.TransportationsPanel?>
+<?import yaskoam.oit.lab2.desktop.panels.DriversAndCarsPanel?>
 
-<fx:root type="yaskoam.oit.lab2.desktop.MainPanel" xmlns:fx="http://javafx.com/fxml/1" prefWidth="900" prefHeight="600"
-         stylesheets="/yaskoam/oit/lab2/desktop/style.css">
+<fx:root type="yaskoam.oit.lab2.desktop.MainPanel" xmlns:fx="http://javafx.com/fxml/1" prefWidth="900" prefHeight="600">
 
     <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
-        <Tab text="Transportations">
-            <TransportationsPanel/>
+        <Tab text="Перевозки">
+            <TransportationsPanel fx:id="transportationsPanel"/>
         </Tab>
 
-        <Tab text="Drivers &amp; Cars">
+        <Tab text="Водители и автомобили">
+            <DriversAndCarsPanel fx:id="driversAndCarsPanel"/>
         </Tab>
 
     </TabPane>
