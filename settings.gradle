@@ -3,3 +3,4 @@ rootProject.name = 'oit.labs'
 include "yaskoam.oit.lab1"
 include "yaskoam.oit.lab2.service"
 include "yaskoam.oit.lab2.desktop"
+include "yaskoam.oit.lab2.web"

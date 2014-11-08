@@ -1,0 +1,16 @@
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+dependencies {
+    compile project(":yaskoam.oit.lab2.service")
+
+    compile 'org.springframework:spring-context:4.1.1.RELEASE'
+
+    compile 'org.apache.wicket:wicket-core:6.18.0'
+}
+
+jettyRunWar {
+    contextPath = 'transportations'
+    httpPort = 8080
+    stopPort = 8888
+}
