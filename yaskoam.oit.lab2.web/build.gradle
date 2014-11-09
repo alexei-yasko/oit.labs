@@ -5,8 +5,12 @@ dependencies {
     compile project(":yaskoam.oit.lab2.service")
 
     compile 'org.springframework:spring-context:4.1.1.RELEASE'
+    compile 'org.springframework:spring-web:4.1.1.RELEASE'
 
     compile 'org.apache.wicket:wicket-core:6.18.0'
+    compile 'org.apache.wicket:wicket-extensions:6.17.0'
+    compile 'org.apache.wicket:wicket-datetime:6.17.0'
+    compile 'org.apache.wicket:wicket-spring:6.17.0'
 }
 
 jettyRunWar {
@@ -14,3 +18,5 @@ jettyRunWar {
     httpPort = 8080
     stopPort = 8888
 }
+
+task startWebapp(dependsOn: jettyRunWar)

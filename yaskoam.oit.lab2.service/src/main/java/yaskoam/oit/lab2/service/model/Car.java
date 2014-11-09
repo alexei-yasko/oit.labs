@@ -6,9 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity(name = "Car")
-public class Car {
+public class Car implements Serializable {
+
+    private static final int serialVersionUID = -1;
 
     @Id
     @GenericGenerator(name = "increment", strategy = "increment")

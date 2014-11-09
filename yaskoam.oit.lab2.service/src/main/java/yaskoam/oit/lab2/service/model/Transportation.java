@@ -9,10 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity(name = "Transportation")
-public class Transportation {
+public class Transportation implements Serializable {
+
+    private static final int serialVersionUID = -1;
 
     @Id
     @GenericGenerator(name = "increment", strategy = "increment")
