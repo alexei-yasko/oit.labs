@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import java.io.Serializable;
 
 @Entity(name = "Car")
@@ -22,11 +23,16 @@ public class Car implements Serializable {
     @Column(name = "model")
     private String model;
 
+    @Lob
+    @Column(name = "photo")
+    private byte[] photo;
+
     public Car() {
     }
 
-    public Car(String model) {
+    public Car(String model, byte[] photo) {
         this.model = model;
+        this.photo = photo;
     }
 
     public int getCode() {
@@ -39,6 +45,14 @@ public class Car implements Serializable {
 
     public void setModel(String name) {
         this.model = name;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 
     @Override

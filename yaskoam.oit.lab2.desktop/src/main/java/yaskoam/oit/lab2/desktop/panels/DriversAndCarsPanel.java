@@ -3,19 +3,30 @@ package yaskoam.oit.lab2.desktop.panels;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import yaskoam.oit.lab2.desktop.AppSettings;
 import yaskoam.oit.lab2.desktop.BaseComponent;
 import yaskoam.oit.lab2.service.TransportService;
 import yaskoam.oit.lab2.service.model.Car;
 import yaskoam.oit.lab2.service.model.Driver;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -29,6 +40,7 @@ public class DriversAndCarsPanel extends BaseComponent {
     public TableView<Car> carsTableView;
     public TableColumn<Car, Integer> carCodeColumn;
     public TableColumn<Car, String> carModelColumn;
+    public TableColumn<Car, byte[]> carPhotoColumn;
 
     public TextField newDriverNameTextField;
 
@@ -70,6 +82,7 @@ public class DriversAndCarsPanel extends BaseComponent {
 
         configureCarCodeColumn(carCodeColumn);
         configureCarModelColumn(carModelColumn);
+        configureCarPhotoColumn(carPhotoColumn);
 
         updateData();
     }
@@ -91,10 +104,38 @@ public class DriversAndCarsPanel extends BaseComponent {
     }
 
     public void saveNewCar() {
-        Car car = new Car(newCarModelTextField.getText());
+        Car car = new Car(newCarModelTextField.getText(), choseCarPhoto());
         transportService.saveCar(car);
         updateData();
         transportationsPanel.updateData();
+    }
+
+    private byte[] choseCarPhoto() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Выберите фото");
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter(
+            "Images (*.png, *.jpg, *.bmp, *.gif)", "*.png", "*.jpg", "*.bmp", "*.gif");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+
+        File photoFile = fileChooser.showOpenDialog(new Stage());
+
+        byte[] photo = new byte[0];
+
+        if (photoFile != null) {
+            FileInputStream imageStream = null;
+            try {
+                imageStream = FileUtils.openInputStream(photoFile);
+                photo = IOUtils.toByteArray(imageStream);
+            }
+            catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+            finally {
+                IOUtils.closeQuietly(imageStream);
+            }
+        }
+
+        return photo;
     }
 
     private void removeDrivers(List<Driver> drivers) {
@@ -133,5 +174,25 @@ public class DriversAndCarsPanel extends BaseComponent {
             Car car = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportService.updateCar(car);
         });
+    }
+
+    private void configureCarPhotoColumn(TableColumn<Car, byte[]> column) {
+        column.setCellFactory(param -> new TableCell<Car, byte[]>() {
+
+            @Override
+            public void updateItem(byte[] photo, boolean empty) {
+                if (photo != null && !empty) {
+                    ImageView imageview = new ImageView(new Image(new ByteArrayInputStream(photo)));
+                    imageview.setFitHeight(50);
+                    imageview.setFitWidth(50);
+                    setGraphic(imageview);
+                }
+                else {
+                    setGraphic(null);
+                }
+            }
+        });
+
+        column.setCellValueFactory(new PropertyValueFactory<>("photo"));
     }
 }

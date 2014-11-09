@@ -1,9 +1,12 @@
 package yaskoam.oit.lab2.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import yaskoam.oit.lab2.service.model.Car;
 import yaskoam.oit.lab2.service.model.Driver;
 import yaskoam.oit.lab2.service.model.Transportation;
@@ -11,12 +14,12 @@ import yaskoam.oit.lab2.service.model.Transportation;
 public class TestDataGenerator {
 
     public static List<Transportation> generateTestData() {
-        Car car1 = new Car("audi");
-        Car car2 = new Car("bmw");
-        Car car3 = new Car("ford");
-        Car car4 = new Car("honda");
-        Car car5 = new Car("volkswagen");
-        Car car6 = new Car("opel");
+        Car car1 = new Car("audi", loadTestImage("audi.png"));
+        Car car2 = new Car("bmw", loadTestImage("bmw.png"));
+        Car car3 = new Car("ford", loadTestImage("ford.png"));
+        Car car4 = new Car("honda", loadTestImage("honda.png"));
+        Car car5 = new Car("volkswagen", loadTestImage("volkswagen.png"));
+        Car car6 = new Car("opel", loadTestImage("opel.png"));
 
         Driver driver1 = new Driver("Иванов");
         Driver driver2 = new Driver("Петров");
@@ -49,5 +52,19 @@ public class TestDataGenerator {
 
     private static LocalDate newDate(int year, int month, int day) {
         return LocalDate.of(year, month, day);
+    }
+
+    private static byte[] loadTestImage(String imageName) {
+        InputStream imageInputStream = null;
+        try {
+            imageInputStream = TestDataGenerator.class.getClassLoader().getResourceAsStream("images/" + imageName);
+            return IOUtils.toByteArray(imageInputStream);
+        }
+        catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+        finally {
+            IOUtils.closeQuietly(imageInputStream);
+        }
     }
 }
