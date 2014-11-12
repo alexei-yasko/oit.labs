@@ -3,6 +3,7 @@ package yaskoam.oit.lab2.web.transportation;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
@@ -12,12 +13,15 @@ import org.apache.wicket.model.PropertyModel;
 import yaskoam.oit.lab2.service.model.Transportation;
 import yaskoam.oit.lab2.web.BasePage;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class TransportationsPage extends BasePage {
+public class TransportationsPage extends BasePage<List<Transportation>> {
 
     public TransportationsPage() {
-        TransportationsDataProvider dataProvider = new TransportationsDataProvider(new TransportationsModel());
+        setModel(new TransportationsModel());
+
+        TransportationsDataProvider dataProvider = new TransportationsDataProvider(getModel());
 
         DataView<Transportation> dataView = new DataView<Transportation>("transportations", dataProvider) {
             @Override
@@ -31,6 +35,20 @@ public class TransportationsPage extends BasePage {
                 item.add(new Label("car", PropertyModel.of(item.getModel(), "car.code")));
                 item.add(new Label("weight", PropertyModel.of(item.getModel(), "weight")));
                 item.add(new Label("length", PropertyModel.of(item.getModel(), "length")));
+
+                item.add(new Link<Transportation>("editLink", item.getModel()) {
+                    @Override
+                    public void onClick() {
+
+                    }
+                });
+
+                item.add(new Link<Transportation>("removeLink", item.getModel()) {
+                    @Override
+                    public void onClick() {
+                        getTransportService().removeTransportations(Arrays.asList(getModelObject()));
+                    }
+                });
             }
         };
 

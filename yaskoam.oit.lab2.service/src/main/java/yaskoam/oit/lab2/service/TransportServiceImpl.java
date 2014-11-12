@@ -33,14 +33,8 @@ public class TransportServiceImpl implements TransportService {
 
     @Transactional
     @Override
-    public void saveCar(Car car) {
-        hibernateTemplate.save(car);
-    }
-
-    @Transactional
-    @Override
-    public void updateCar(Car car) {
-        hibernateTemplate.update(car);
+    public void saveOrUpdateCar(Car car) {
+        hibernateTemplate.saveOrUpdate(car);
     }
 
     @Transactional
@@ -63,14 +57,8 @@ public class TransportServiceImpl implements TransportService {
 
     @Transactional
     @Override
-    public void saveDriver(Driver driver) {
-        hibernateTemplate.save(driver);
-    }
-
-    @Transactional
-    @Override
-    public void updateDriver(Driver driver) {
-        hibernateTemplate.update(driver);
+    public void saveOrUpdateDriver(Driver driver) {
+        hibernateTemplate.saveOrUpdate(driver);
     }
 
     @Transactional
@@ -87,20 +75,14 @@ public class TransportServiceImpl implements TransportService {
 
     @Transactional
     @Override
-    public void saveTransportation(Transportation transportation) {
-        hibernateTemplate.save(transportation);
+    public void saveOrUpdateTransportation(Transportation transportation) {
+        hibernateTemplate.saveOrUpdate(transportation);
     }
 
     @Transactional
     @Override
     public void saveTransportations(List<Transportation> transportations) {
-        transportations.stream().forEach(this::saveTransportation);
-    }
-
-    @Transactional
-    @Override
-    public void updateTransportation(Transportation transportation) {
-        hibernateTemplate.update(transportation);
+        transportations.stream().forEach(this::saveOrUpdateTransportation);
     }
 
     @Transactional(readOnly = true)

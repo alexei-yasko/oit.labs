@@ -98,14 +98,14 @@ public class DriversAndCarsPanel extends BaseComponent {
 
     public void saveNewDriver() {
         Driver driver = new Driver(newDriverNameTextField.getText());
-        transportService.saveDriver(driver);
+        transportService.saveOrUpdateDriver(driver);
         updateData();
         transportationsPanel.updateData();
     }
 
     public void saveNewCar() {
         Car car = new Car(newCarModelTextField.getText(), choseCarPhoto());
-        transportService.saveCar(car);
+        transportService.saveOrUpdateCar(car);
         updateData();
         transportationsPanel.updateData();
     }
@@ -159,7 +159,7 @@ public class DriversAndCarsPanel extends BaseComponent {
         column.setCellValueFactory(new PropertyValueFactory<>("name"));
         column.setOnEditCommit(event -> {
             Driver driver = event.getTableView().getItems().get(event.getTablePosition().getRow());
-            transportService.updateDriver(driver);
+            transportService.saveOrUpdateDriver(driver);
         });
     }
 
@@ -172,7 +172,7 @@ public class DriversAndCarsPanel extends BaseComponent {
         column.setCellValueFactory(new PropertyValueFactory<>("model"));
         column.setOnEditCommit(event -> {
             Car car = event.getTableView().getItems().get(event.getTablePosition().getRow());
-            transportService.updateCar(car);
+            transportService.saveOrUpdateCar(car);
         });
     }
 

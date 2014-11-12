@@ -110,7 +110,7 @@ public class TransportationsPanel extends BaseComponent {
 
         Transportation transportation = new Transportation(date, driver, car, weight, length);
 
-        transportService.saveTransportation(transportation);
+        transportService.saveOrUpdateTransportation(transportation);
 
         updateData();
     }
@@ -138,7 +138,7 @@ public class TransportationsPanel extends BaseComponent {
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setDate(event.getNewValue());
-            transportService.updateTransportation(transportation);
+            transportService.saveOrUpdateTransportation(transportation);
         });
     }
 
@@ -152,7 +152,7 @@ public class TransportationsPanel extends BaseComponent {
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setDriver(event.getNewValue());
-            transportService.updateTransportation(transportation);
+            transportService.saveOrUpdateTransportation(transportation);
         });
     }
 
@@ -162,7 +162,7 @@ public class TransportationsPanel extends BaseComponent {
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setCar(event.getNewValue());
-            transportService.updateTransportation(transportation);
+            transportService.saveOrUpdateTransportation(transportation);
         });
     }
 
@@ -172,7 +172,7 @@ public class TransportationsPanel extends BaseComponent {
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setWeight(event.getNewValue());
-            transportService.updateTransportation(transportation);
+            transportService.saveOrUpdateTransportation(transportation);
         });
     }
 
@@ -182,7 +182,7 @@ public class TransportationsPanel extends BaseComponent {
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setLength(event.getNewValue());
-            transportService.updateTransportation(transportation);
+            transportService.saveOrUpdateTransportation(transportation);
         });
     }
 
