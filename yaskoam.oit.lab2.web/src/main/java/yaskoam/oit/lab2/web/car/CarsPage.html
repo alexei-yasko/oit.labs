@@ -1,3 +1,17 @@
 <wicket:extend xmlns:wicket>
-    Hello!!
+
+    <table>
+        <tr>
+            <th>Код</th>
+            <th>Марка</th>
+            <th>Фото</th>
+        </tr>
+
+        <tr wicket:id="cars">
+            <td wicket:id="code"></td>
+            <td wicket:id="model"></td>
+            <td><img wicket:id="photo"/></td>
+        </tr>
+    </table>
+
 </wicket:extend>

@@ -9,17 +9,12 @@ import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import yaskoam.oit.lab2.service.TransportService;
 import yaskoam.oit.lab2.service.model.Transportation;
 import yaskoam.oit.lab2.web.BasePage;
 
 import java.util.List;
 
 public class TransportationsPage extends BasePage {
-
-    @SpringBean
-    private TransportService service;
 
     public TransportationsPage() {
         TransportationsDataProvider dataProvider = new TransportationsDataProvider(new TransportationsModel());
@@ -60,7 +55,7 @@ public class TransportationsPage extends BasePage {
 
         @Override
         protected List<Transportation> load() {
-            return service.getTransportations();
+            return getTransportService().getTransportations();
         }
     }
 }
