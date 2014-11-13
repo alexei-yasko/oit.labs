@@ -3,7 +3,9 @@ package yaskoam.oit.lab2.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -50,8 +52,8 @@ public class TestDataGenerator {
         );
     }
 
-    private static LocalDate newDate(int year, int month, int day) {
-        return LocalDate.of(year, month, day);
+    private static Date newDate(int year, int month, int day) {
+        return Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
     private static byte[] loadTestImage(String imageName) {

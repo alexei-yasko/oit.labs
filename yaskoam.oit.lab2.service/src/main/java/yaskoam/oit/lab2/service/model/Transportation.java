@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity(name = "Transportation")
 public class Transportation implements Serializable {
@@ -24,7 +24,7 @@ public class Transportation implements Serializable {
     private int number;
 
     @Column(name = "date")
-    private LocalDate date;
+    private Date date;
 
     @OneToOne
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
@@ -45,7 +45,7 @@ public class Transportation implements Serializable {
     public Transportation() {
     }
 
-    public Transportation(LocalDate date, Driver driver, Car car, double weight, double length) {
+    public Transportation(Date date, Driver driver, Car car, double weight, double length) {
         this.date = date;
         this.driver = driver;
         this.car = car;
@@ -57,11 +57,11 @@ public class Transportation implements Serializable {
         return number;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

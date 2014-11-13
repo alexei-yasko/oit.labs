@@ -3,8 +3,8 @@ package yaskoam.oit.lab2.desktop.panels;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -21,6 +21,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.util.StringConverter;
+import javafx.util.converter.DateStringConverter;
 import javafx.util.converter.DoubleStringConverter;
 import yaskoam.oit.lab2.desktop.AppSettings;
 import yaskoam.oit.lab2.desktop.BaseComponent;
@@ -36,7 +37,7 @@ public class TransportationsPanel extends BaseComponent {
     public TableView<Transportation> tableView;
 
     public TableColumn<Transportation, String> numberColumn;
-    public TableColumn<Transportation, LocalDate> dateColumn;
+    public TableColumn<Transportation, Date> dateColumn;
     public TableColumn<Transportation, Driver> driverColumn;
     public TableColumn<Transportation, Car> carColumn;
     public TableColumn<Transportation, Double> weightColumn;
@@ -102,7 +103,7 @@ public class TransportationsPanel extends BaseComponent {
     }
 
     public void saveNewTransportation() {
-        LocalDate date = newDateDatePicker.getValue();
+        Date date = Date.from(newDateDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
         Driver driver = newDriverComboBox.getValue();
         Car car = newCarComboBox.getValue();
         double weight = UiUtils.getDoubleValue(newWeightTextField);
@@ -132,8 +133,8 @@ public class TransportationsPanel extends BaseComponent {
         updateData();
     }
 
-    private void configureDateColumn(TableColumn<Transportation, LocalDate> column) {
-        column.setCellFactory(param -> new TextFieldTableCell<>(new LocalDateStringConverter()));
+    private void configureDateColumn(TableColumn<Transportation, Date> column) {
+        column.setCellFactory(param -> new TextFieldTableCell<>(new DateStringConverter("dd.MM.yyyy")));
         column.setCellValueFactory(new PropertyValueFactory<>("date"));
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
@@ -184,21 +185,6 @@ public class TransportationsPanel extends BaseComponent {
             transportation.setLength(event.getNewValue());
             transportService.saveOrUpdate(transportation);
         });
-    }
-
-    private class LocalDateStringConverter extends StringConverter<LocalDate> {
-
-        private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-        @Override
-        public String toString(LocalDate date) {
-            return date != null ? date.format(dateFormatter) : null;
-        }
-
-        @Override
-        public LocalDate fromString(String stringDate) {
-            return LocalDate.parse(stringDate, dateFormatter);
-        }
     }
 
     private class DriverStringConverter extends StringConverter<Driver> {

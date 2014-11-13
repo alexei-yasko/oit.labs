@@ -39,7 +39,7 @@ public class TransportationsPage extends BasePage<List<Transportation>> {
                 item.add(new Link<Transportation>("editLink", item.getModel()) {
                     @Override
                     public void onClick() {
-
+                        setResponsePage(new EditTransportationPage(getModel()));
                     }
                 });
 

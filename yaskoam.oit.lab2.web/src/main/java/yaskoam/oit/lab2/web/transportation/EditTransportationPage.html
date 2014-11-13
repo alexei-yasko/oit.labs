@@ -1,0 +1,31 @@
+<wicket:extend xmlns:wicket>
+
+    <form wicket:id="editForm">
+        <p>
+            <span>Номер</span>
+            <input type="text" disabled wicket:id="number"/>
+        </p>
+        <p>
+            <span>Дата</span>
+            <input type="text" disabled wicket:id="date"/>
+        </p>
+        <p>
+            <span>Код водителя</span>
+            <input type="text" disabled wicket:id="driver"/>
+        </p>
+        <p>
+            <span>Код автомобиля</span>
+            <input type="text" disabled wicket:id="car"/>
+        </p>
+        <p>
+            <span>Вес груза</span>
+            <input type="text" disabled wicket:id="weight"/>
+        </p>
+        <p>
+            <span>Длина пути</span>
+            <input type="text" disabled wicket:id="length"/>
+        </p>
+        <input type="submit" value="Сохранить" wicket:id="saveButton">
+    </form>
+
+</wicket:extend>
