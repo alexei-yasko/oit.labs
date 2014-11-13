@@ -3,7 +3,6 @@ package yaskoam.oit.lab2.web.car;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -22,6 +21,7 @@ import org.apache.wicket.request.resource.IResource;
 
 import yaskoam.oit.lab2.service.model.Car;
 import yaskoam.oit.lab2.web.BasePage;
+import yaskoam.oit.lab2.web.support.RemoveEntityLink;
 
 public class CarsPage extends BasePage<List<Car>> {
 
@@ -42,17 +42,7 @@ public class CarsPage extends BasePage<List<Car>> {
                     }
                 });
 
-                item.add(new Link<Car>("removeLink", item.getModel()) {
-                    @Override
-                    public void onClick() {
-                        try {
-                            getTransportService().removeCars(Arrays.asList(getModelObject()));
-                        }
-                        catch (Throwable e) {
-                            CarsPage.this.error(e.getMessage());
-                        }
-                    }
-                });
+                item.add(new RemoveEntityLink<>("removeLink", item.getModel()));
             }
         };
 
@@ -93,7 +83,7 @@ public class CarsPage extends BasePage<List<Car>> {
 
         @Override
         protected List<Car> load() {
-            return getTransportService().getCars();
+            return getTransportService().getAll(Car.class);
         }
     }
 }

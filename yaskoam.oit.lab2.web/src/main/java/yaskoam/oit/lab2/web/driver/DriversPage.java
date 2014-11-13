@@ -1,6 +1,5 @@
 package yaskoam.oit.lab2.web.driver;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -14,6 +13,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import yaskoam.oit.lab2.service.model.Driver;
 import yaskoam.oit.lab2.web.BasePage;
+import yaskoam.oit.lab2.web.support.RemoveEntityLink;
 
 public class DriversPage extends BasePage<List<Driver>> {
 
@@ -33,17 +33,7 @@ public class DriversPage extends BasePage<List<Driver>> {
                     }
                 });
 
-                item.add(new Link<Driver>("removeLink", item.getModel()) {
-                    @Override
-                    public void onClick() {
-                        try {
-                            getTransportService().removeDrivers(Arrays.asList(getModelObject()));
-                        }
-                        catch (Throwable e) {
-                            DriversPage.this.error(e.getMessage());
-                        }
-                    }
-                });
+                item.add(new RemoveEntityLink<>("removeLink", item.getModel()));
             }
         };
 
@@ -68,7 +58,7 @@ public class DriversPage extends BasePage<List<Driver>> {
 
         @Override
         protected List<Driver> load() {
-            return getTransportService().getDrivers();
+            return getTransportService().getAll(Driver.class);
         }
     }
 }

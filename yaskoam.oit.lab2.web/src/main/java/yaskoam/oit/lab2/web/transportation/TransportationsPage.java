@@ -12,8 +12,8 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import yaskoam.oit.lab2.service.model.Transportation;
 import yaskoam.oit.lab2.web.BasePage;
+import yaskoam.oit.lab2.web.support.RemoveEntityLink;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class TransportationsPage extends BasePage<List<Transportation>> {
@@ -43,12 +43,7 @@ public class TransportationsPage extends BasePage<List<Transportation>> {
                     }
                 });
 
-                item.add(new Link<Transportation>("removeLink", item.getModel()) {
-                    @Override
-                    public void onClick() {
-                        getTransportService().removeTransportations(Arrays.asList(getModelObject()));
-                    }
-                });
+                item.add(new RemoveEntityLink<>("removeLink", item.getModel()));
             }
         };
 
@@ -73,7 +68,7 @@ public class TransportationsPage extends BasePage<List<Transportation>> {
 
         @Override
         protected List<Transportation> load() {
-            return getTransportService().getTransportations();
+            return getTransportService().getAll(Transportation.class);
         }
     }
 }

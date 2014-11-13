@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import yaskoam.oit.lab2.service.TestDataGenerator;
 import yaskoam.oit.lab2.service.TransportService;
+import yaskoam.oit.lab2.service.model.Transportation;
 import yaskoam.oit.lab2.web.transportation.TransportationsPage;
 
 public class TransportationsApplication extends WebApplication {
@@ -33,8 +34,8 @@ public class TransportationsApplication extends WebApplication {
     }
 
     private void generateTestDataIfNeeded() {
-        if (transportService.getTransportations().isEmpty()) {
-            transportService.saveTransportations(TestDataGenerator.generateTestData());
+        if (transportService.getAll(Transportation.class).isEmpty()) {
+            transportService.saveOrUpdate(TestDataGenerator.generateTestData());
         }
     }
 }
