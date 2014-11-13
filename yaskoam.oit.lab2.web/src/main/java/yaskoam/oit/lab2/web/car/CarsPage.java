@@ -45,7 +45,12 @@ public class CarsPage extends BasePage<List<Car>> {
                 item.add(new Link<Car>("removeLink", item.getModel()) {
                     @Override
                     public void onClick() {
-                        getTransportService().removeCars(Arrays.asList(getModelObject()));
+                        try {
+                            getTransportService().removeCars(Arrays.asList(getModelObject()));
+                        }
+                        catch (Throwable e) {
+                            CarsPage.this.error(e.getMessage());
+                        }
                     }
                 });
             }

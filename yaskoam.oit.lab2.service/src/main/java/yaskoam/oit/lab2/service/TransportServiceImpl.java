@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import yaskoam.oit.lab2.service.model.Car;
-import yaskoam.oit.lab2.service.model.Driver;
 import yaskoam.oit.lab2.service.model.Transportation;
 
 @Service
@@ -21,68 +19,38 @@ public class TransportServiceImpl implements TransportService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Car> getCars() {
-        return hibernateTemplate.loadAll(Car.class);
+    public <T> List<T> getAll(Class<T> clazz) {
+        return hibernateTemplate.loadAll(clazz);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Car getCar(int code) {
-        return hibernateTemplate.get(Car.class, code);
+    public <T> T get(Class<T> clazz, int id) {
+        return hibernateTemplate.get(clazz, id);
     }
 
     @Transactional
     @Override
-    public void saveOrUpdateCar(Car car) {
-        hibernateTemplate.saveOrUpdate(car);
+    public <T> void saveOrUpdate(T entity) {
+        hibernateTemplate.save(entity);
     }
 
     @Transactional
     @Override
-    public void removeCars(List<Car> cars) {
-        hibernateTemplate.deleteAll(cars);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Driver> getDrivers() {
-        return hibernateTemplate.loadAll(Driver.class);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Driver getDriver(int code) {
-        return hibernateTemplate.get(Driver.class, code);
+    public <T> void saveOrUpdate(List<T> entities) {
+        entities.stream().forEach(this::saveOrUpdate);
     }
 
     @Transactional
     @Override
-    public void saveOrUpdateDriver(Driver driver) {
-        hibernateTemplate.saveOrUpdate(driver);
+    public <T> void remove(T entity) {
+        hibernateTemplate.delete(entity);
     }
 
     @Transactional
     @Override
-    public void removeDrivers(List<Driver> drivers) {
-        hibernateTemplate.deleteAll(drivers);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Transportation> getTransportations() {
-        return hibernateTemplate.loadAll(Transportation.class);
-    }
-
-    @Transactional
-    @Override
-    public void saveOrUpdateTransportation(Transportation transportation) {
-        hibernateTemplate.saveOrUpdate(transportation);
-    }
-
-    @Transactional
-    @Override
-    public void saveTransportations(List<Transportation> transportations) {
-        transportations.stream().forEach(this::saveOrUpdateTransportation);
+    public <T> void removeAll(List<T> entities) {
+        hibernateTemplate.deleteAll(entities);
     }
 
     @Transactional(readOnly = true)
@@ -96,11 +64,5 @@ public class TransportServiceImpl implements TransportService {
             new String[]{"rate", "numbers"}, new Object[]{rate, numbers});
 
         return result.get(0) != null ? (double) result.get(0) : 0;
-    }
-
-    @Transactional
-    @Override
-    public void removeTransportations(List<Transportation> transportations) {
-        hibernateTemplate.deleteAll(transportations);
     }
 }

@@ -1,6 +1,7 @@
 <wicket:extend xmlns:wicket>
 
-    <table>
+    <table class="transportations">
+        <thead>
         <tr>
             <th>Номер</th>
             <th>Дата</th>
@@ -8,8 +9,11 @@
             <th>Код автомобиля</th>
             <th>Вес груза</th>
             <th>Длина пути</th>
+            <th>Действия</th>
         </tr>
+        </thead>
 
+        <tbody>
         <tr wicket:id="transportations">
             <td wicket:id="number"></td>
             <td wicket:id="date"></td>
@@ -18,10 +22,11 @@
             <td wicket:id="weight"></td>
             <td wicket:id="length"></td>
             <td>
-                <a wicket:id="editLink">Редактировать</a>
-                <a wicket:id="removeLink">Удалить</a>
+                <p><a wicket:id="editLink">Редактировать</a></p>
+                <p><a wicket:id="removeLink">Удалить</a></p>
             </td>
         </tr>
+        </tbody>
     </table>
 
 </wicket:extend>

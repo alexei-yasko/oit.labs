@@ -96,9 +96,9 @@ public class TransportationsPanel extends BaseComponent {
     }
 
     public void updateData() {
-        transportations.setAll(transportService.getTransportations());
-        drivers.setAll(transportService.getDrivers());
-        cars.setAll(transportService.getCars());
+        transportations.setAll(transportService.getAll(Transportation.class));
+        drivers.setAll(transportService.getAll(Driver.class));
+        cars.setAll(transportService.getAll(Car.class));
     }
 
     public void saveNewTransportation() {
@@ -110,7 +110,7 @@ public class TransportationsPanel extends BaseComponent {
 
         Transportation transportation = new Transportation(date, driver, car, weight, length);
 
-        transportService.saveOrUpdateTransportation(transportation);
+        transportService.saveOrUpdate(transportation);
 
         updateData();
     }
@@ -128,7 +128,7 @@ public class TransportationsPanel extends BaseComponent {
     }
 
     private void removeTransportations(List<Transportation> transportations) {
-        transportService.removeTransportations(transportations);
+        transportService.removeAll(transportations);
         updateData();
     }
 
@@ -138,7 +138,7 @@ public class TransportationsPanel extends BaseComponent {
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setDate(event.getNewValue());
-            transportService.saveOrUpdateTransportation(transportation);
+            transportService.saveOrUpdate(transportation);
         });
     }
 
@@ -152,7 +152,7 @@ public class TransportationsPanel extends BaseComponent {
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setDriver(event.getNewValue());
-            transportService.saveOrUpdateTransportation(transportation);
+            transportService.saveOrUpdate(transportation);
         });
     }
 
@@ -162,7 +162,7 @@ public class TransportationsPanel extends BaseComponent {
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setCar(event.getNewValue());
-            transportService.saveOrUpdateTransportation(transportation);
+            transportService.saveOrUpdate(transportation);
         });
     }
 
@@ -172,7 +172,7 @@ public class TransportationsPanel extends BaseComponent {
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setWeight(event.getNewValue());
-            transportService.saveOrUpdateTransportation(transportation);
+            transportService.saveOrUpdate(transportation);
         });
     }
 
@@ -182,7 +182,7 @@ public class TransportationsPanel extends BaseComponent {
         column.setOnEditCommit(event -> {
             Transportation transportation = event.getTableView().getItems().get(event.getTablePosition().getRow());
             transportation.setLength(event.getNewValue());
-            transportService.saveOrUpdateTransportation(transportation);
+            transportService.saveOrUpdate(transportation);
         });
     }
 
@@ -216,7 +216,7 @@ public class TransportationsPanel extends BaseComponent {
 
         @Override
         public Driver fromString(String driverCode) {
-            return transportService.getDriver(Integer.parseInt(driverCode));
+            return transportService.get(Driver.class, Integer.parseInt(driverCode));
         }
     }
 
@@ -235,7 +235,7 @@ public class TransportationsPanel extends BaseComponent {
 
         @Override
         public Car fromString(String carCode) {
-            return transportService.getCar(Integer.parseInt(carCode));
+            return transportService.get(Car.class, Integer.parseInt(carCode));
         }
     }
 }

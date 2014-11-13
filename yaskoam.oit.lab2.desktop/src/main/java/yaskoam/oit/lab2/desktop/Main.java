@@ -25,9 +25,9 @@ public class Main extends Application {
         TransportService transportService = applicationContext.getBean(TransportService.class);
         AppSettings.get().setTransportService(transportService);
 
-        if (transportService.getTransportations().isEmpty()) {
+        if (transportService.getAll(Transportation.class).isEmpty()) {
             List<Transportation> transportations = TestDataGenerator.generateTestData();
-            transportService.saveTransportations(transportations);
+            transportService.saveOrUpdate(transportations);
         }
 
         Parent root = new MainPanel();

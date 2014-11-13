@@ -36,7 +36,12 @@ public class DriversPage extends BasePage<List<Driver>> {
                 item.add(new Link<Driver>("removeLink", item.getModel()) {
                     @Override
                     public void onClick() {
-                        getTransportService().removeDrivers(Arrays.asList(getModelObject()));
+                        try {
+                            getTransportService().removeDrivers(Arrays.asList(getModelObject()));
+                        }
+                        catch (Throwable e) {
+                            DriversPage.this.error(e.getMessage());
+                        }
                     }
                 });
             }

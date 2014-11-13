@@ -92,20 +92,20 @@ public class DriversAndCarsPanel extends BaseComponent {
     }
 
     public void updateData() {
-        drivers.setAll(transportService.getDrivers());
-        cars.setAll(transportService.getCars());
+        drivers.setAll(transportService.getAll(Driver.class));
+        cars.setAll(transportService.getAll(Car.class));
     }
 
     public void saveNewDriver() {
         Driver driver = new Driver(newDriverNameTextField.getText());
-        transportService.saveOrUpdateDriver(driver);
+        transportService.saveOrUpdate(driver);
         updateData();
         transportationsPanel.updateData();
     }
 
     public void saveNewCar() {
         Car car = new Car(newCarModelTextField.getText(), choseCarPhoto());
-        transportService.saveOrUpdateCar(car);
+        transportService.saveOrUpdate(car);
         updateData();
         transportationsPanel.updateData();
     }
@@ -139,13 +139,13 @@ public class DriversAndCarsPanel extends BaseComponent {
     }
 
     private void removeDrivers(List<Driver> drivers) {
-        transportService.removeDrivers(drivers);
+        transportService.removeAll(drivers);
         updateData();
         transportationsPanel.updateData();
     }
 
     private void removeCars(List<Car> cars) {
-        transportService.removeCars(cars);
+        transportService.removeAll(cars);
         updateData();
         transportationsPanel.updateData();
     }
@@ -159,7 +159,8 @@ public class DriversAndCarsPanel extends BaseComponent {
         column.setCellValueFactory(new PropertyValueFactory<>("name"));
         column.setOnEditCommit(event -> {
             Driver driver = event.getTableView().getItems().get(event.getTablePosition().getRow());
-            transportService.saveOrUpdateDriver(driver);
+            driver.setName(event.getNewValue());
+            transportService.saveOrUpdate(driver);
         });
     }
 
@@ -172,7 +173,8 @@ public class DriversAndCarsPanel extends BaseComponent {
         column.setCellValueFactory(new PropertyValueFactory<>("model"));
         column.setOnEditCommit(event -> {
             Car car = event.getTableView().getItems().get(event.getTablePosition().getRow());
-            transportService.saveOrUpdateCar(car);
+            car.setModel(event.getNewValue());
+            transportService.saveOrUpdate(car);
         });
     }
 

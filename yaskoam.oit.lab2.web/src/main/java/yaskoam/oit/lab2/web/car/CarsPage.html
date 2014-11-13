@@ -1,21 +1,26 @@
 <wicket:extend xmlns:wicket>
 
-    <table>
+    <table class="cars">
+        <thead>
         <tr>
             <th>Код</th>
             <th>Марка</th>
             <th>Фото</th>
+            <th>Действия</th>
         </tr>
+        </thead>
 
+        <tbody>
         <tr wicket:id="cars">
             <td wicket:id="code"></td>
             <td wicket:id="model"></td>
             <td><img wicket:id="photo"/></td>
             <td>
-                <a wicket:id="editLink">Редактировать</a>
-                <a wicket:id="removeLink">Удалить</a>
+                <p><a wicket:id="editLink">Редактировать</a></p>
+                <p><a wicket:id="removeLink">Удалить</a></p>
             </td>
         </tr>
+        </tbody>
     </table>
 
 </wicket:extend>
