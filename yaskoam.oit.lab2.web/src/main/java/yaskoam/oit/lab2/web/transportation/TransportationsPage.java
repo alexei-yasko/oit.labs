@@ -21,8 +21,14 @@ public class TransportationsPage extends BasePage<List<Transportation>> {
     public TransportationsPage() {
         setModel(new TransportationsModel());
 
-        TransportationsDataProvider dataProvider = new TransportationsDataProvider(getModel());
+        add(new Link<Transportation>("addTransportationLink") {
+            @Override
+            public void onClick() {
+                setResponsePage(new EditTransportationPage(TransportationsPage.this));
+            }
+        });
 
+        TransportationsDataProvider dataProvider = new TransportationsDataProvider(getModel());
         DataView<Transportation> dataView = new DataView<Transportation>("transportations", dataProvider) {
             @Override
             protected void populateItem(Item<Transportation> item) {
@@ -39,14 +45,13 @@ public class TransportationsPage extends BasePage<List<Transportation>> {
                 item.add(new Link<Transportation>("editLink", item.getModel()) {
                     @Override
                     public void onClick() {
-                        setResponsePage(new EditTransportationPage(getModel()));
+                        setResponsePage(new EditTransportationPage(getModel(), TransportationsPage.this));
                     }
                 });
 
                 item.add(new RemoveEntityLink<>("removeLink", item.getModel()));
             }
         };
-
         add(dataView);
     }
 

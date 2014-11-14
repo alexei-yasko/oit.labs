@@ -32,7 +32,7 @@ public class TransportServiceImpl implements TransportService {
     @Transactional
     @Override
     public <T> void saveOrUpdate(T entity) {
-        hibernateTemplate.save(entity);
+        hibernateTemplate.saveOrUpdate(entity);
     }
 
     @Transactional

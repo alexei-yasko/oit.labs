@@ -2,35 +2,43 @@ package yaskoam.oit.lab2.web.transportation;
 
 import java.util.List;
 
+import org.apache.wicket.Page;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.NumberTextField;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 
 import yaskoam.oit.lab2.service.model.Car;
 import yaskoam.oit.lab2.service.model.Driver;
 import yaskoam.oit.lab2.service.model.Transportation;
 import yaskoam.oit.lab2.web.BasePage;
+import yaskoam.oit.lab2.web.support.CancelButton;
+import yaskoam.oit.lab2.web.support.EditEntityForm;
+import yaskoam.oit.lab2.web.support.SaveButton;
 
 public class EditTransportationPage extends BasePage<Transportation> {
 
-    public EditTransportationPage(IModel<Transportation> model) {
+    public EditTransportationPage(Page previousPage) {
+        this(Model.of(new Transportation()), previousPage);
+    }
+
+    public EditTransportationPage(IModel<Transportation> model, Page previousPage) {
         setModel(model);
 
-        Form<Transportation> editForm = new Form<>("editForm", new CompoundPropertyModel<>(model));
-        editForm.add(new TextField<String>("number"));
-        editForm.add(new DateTextField("date", new PatternDateConverter("dd.MM.yyyy", false)));
-        editForm.add(new DropDownChoice<>("driver", new DriversModel()));
-        editForm.add(new DropDownChoice<>("car", new CarsModel()));
-        editForm.add(new NumberTextField<Double>("weight"));
-        editForm.add(new NumberTextField<Double>("length"));
-        editForm.add(new Button("saveButton"));
+        EditEntityForm<Transportation> editForm = new EditEntityForm<>("editForm", new CompoundPropertyModel<>(model));
+
+        editForm.add(new DateTextField("date", new PatternDateConverter("dd.MM.yyyy", true)));
+        editForm.add(new DropDownChoice<>("driver", new DriversModel(), new DriverRenderer()));
+        editForm.add(new DropDownChoice<>("car", new CarsModel(), new CarRenderer()));
+        editForm.add(new TextField<>("weight", Double.class));
+        editForm.add(new TextField<>("length", Double.class));
+        editForm.add(new SaveButton("saveButton", previousPage));
+        editForm.add(new CancelButton("cancelButton", previousPage));
 
         add(editForm);
     }
@@ -48,6 +56,32 @@ public class EditTransportationPage extends BasePage<Transportation> {
         @Override
         protected List<Car> load() {
             return getTransportService().getAll(Car.class);
+        }
+    }
+
+    private class DriverRenderer implements IChoiceRenderer<Driver> {
+
+        @Override
+        public String getDisplayValue(Driver driver) {
+            return Integer.toString(driver.getCode());
+        }
+
+        @Override
+        public String getIdValue(Driver driver, int index) {
+            return Integer.toString(driver.getCode());
+        }
+    }
+
+    private class CarRenderer implements IChoiceRenderer<Car> {
+
+        @Override
+        public String getDisplayValue(Car car) {
+            return Integer.toString(car.getCode());
+        }
+
+        @Override
+        public String getIdValue(Car car, int index) {
+            return Integer.toString(car.getCode());
         }
     }
 }

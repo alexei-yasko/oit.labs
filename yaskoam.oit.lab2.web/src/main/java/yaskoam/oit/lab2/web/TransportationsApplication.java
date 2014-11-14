@@ -22,6 +22,9 @@ public class TransportationsApplication extends WebApplication {
     @Override
     protected void init() {
         super.init();
+
+        getRequestCycleListeners().add(new ExceptionRequestCycleListener());
+
         generateTestDataIfNeeded();
     }
 
