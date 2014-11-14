@@ -1,35 +1,65 @@
 <wicket:extend xmlns:wicket>
 
-    <table class="transportations">
-        <thead>
-        <tr>
-            <th colspan="7"><a class="addLink" wicket:id="addTransportationLink">Добавить</a></th>
-        </tr>
-        <tr>
-            <th>Номер</th>
-            <th>Дата</th>
-            <th>Код водителя</th>
-            <th>Код автомобиля</th>
-            <th>Вес груза</th>
-            <th>Длина пути</th>
-            <th>Действия</th>
-        </tr>
-        </thead>
+    <form wicket:id="calculateCostForm">
+        <wicket:container wicket:id="group">
+            <table class="transportations">
+                <thead>
 
-        <tbody>
-        <tr wicket:id="transportations">
-            <td wicket:id="number"></td>
-            <td wicket:id="date"></td>
-            <td wicket:id="driver"></td>
-            <td wicket:id="car"></td>
-            <td wicket:id="weight"></td>
-            <td wicket:id="length"></td>
-            <td>
-                <p><a wicket:id="editLink">Редактировать</a></p>
-                <p><a wicket:id="removeLink">Удалить</a></p>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                <tr>
+                    <th colspan="8"><a class="addLink" wicket:id="addTransportationLink">Добавить</a></th>
+                </tr>
+
+                <tr>
+                    <th colspan="8">
+                        <div class="rate">
+                            <label for="rate">Тариф:</label>
+                            <input id="rate" type="text" wicket:id="rate"/>
+                        </div>
+                        <div class="cost">
+                            <label for="cost">Рассчитанная стоимость:</label>
+                            <input id="cost" type="text" readonly="true" wicket:id="cost"/>
+                        </div>
+                        <div class="actionBar">
+                            <input type="submit" value="Рассчитать">
+                        </div>
+                    </th>
+                </tr>
+
+                <tr>
+                    <th>
+                        <label for="selectAll">Выбрать</label>
+                        <input id="selectAll" type="checkbox" wicket:id="selectAll"/>
+                    </th>
+                    <th>Номер</th>
+                    <th>Дата</th>
+                    <th>Код водителя</th>
+                    <th>Код автомобиля</th>
+                    <th>Вес груза</th>
+                    <th>Длина пути</th>
+                    <th>Действия</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+                <tr wicket:id="transportations">
+                    <td><input type="checkbox" wicket:id="check"/></td>
+                    <td wicket:id="number"></td>
+                    <td wicket:id="date"></td>
+                    <td wicket:id="driver"></td>
+                    <td wicket:id="car"></td>
+                    <td wicket:id="weight"></td>
+                    <td wicket:id="length"></td>
+                    <td>
+                        <p><a wicket:id="editLink">Редактировать</a></p>
+
+                        <p><a wicket:id="removeLink">Удалить</a></p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </wicket:container>
+    </form>
 
 </wicket:extend>

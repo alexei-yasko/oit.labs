@@ -1,7 +1,12 @@
 package yaskoam.oit.lab2.web;
 
+import java.util.Locale;
+
 import org.apache.wicket.Page;
+import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import yaskoam.oit.lab2.service.TestDataGenerator;
@@ -17,6 +22,13 @@ public class TransportationsApplication extends WebApplication {
     @Override
     public Class<? extends Page> getHomePage() {
         return TransportationsPage.class;
+    }
+
+    @Override
+    public Session newSession(Request request, Response response) {
+        Session session = super.newSession(request, response);
+        session.setLocale(new Locale("ru"));
+        return session;
     }
 
     @Override
