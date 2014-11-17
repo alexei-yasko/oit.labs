@@ -1,8 +1,5 @@
 package yaskoam.oit.lab2.web.transportation;
 
-import java.util.List;
-
-import org.apache.wicket.Page;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -10,24 +7,20 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
 
 import yaskoam.oit.lab2.service.model.Car;
 import yaskoam.oit.lab2.service.model.Driver;
 import yaskoam.oit.lab2.service.model.Transportation;
 import yaskoam.oit.lab2.web.BasePage;
+import yaskoam.oit.lab2.web.car.CarsModel;
+import yaskoam.oit.lab2.web.driver.DriversModel;
 import yaskoam.oit.lab2.web.support.CancelButton;
 import yaskoam.oit.lab2.web.support.EditEntityForm;
 import yaskoam.oit.lab2.web.support.SaveButton;
 
 public class EditTransportationPage extends BasePage<Transportation> {
 
-    public EditTransportationPage(Page previousPage) {
-        this(Model.of(new Transportation()), previousPage);
-    }
-
-    public EditTransportationPage(IModel<Transportation> model, Page previousPage) {
+    public EditTransportationPage(IModel<Transportation> model) {
         setModel(model);
 
         EditEntityForm<Transportation> editForm = new EditEntityForm<>("editForm", new CompoundPropertyModel<>(model));
@@ -37,26 +30,10 @@ public class EditTransportationPage extends BasePage<Transportation> {
         editForm.add(new DropDownChoice<>("car", new CarsModel(), new CarRenderer()));
         editForm.add(new TextField<>("weight", Double.class));
         editForm.add(new TextField<>("length", Double.class));
-        editForm.add(new SaveButton("saveButton", previousPage));
-        editForm.add(new CancelButton("cancelButton", previousPage));
+        editForm.add(new SaveButton("saveButton", TransportationsPage.class));
+        editForm.add(new CancelButton("cancelButton", TransportationsPage.class));
 
         add(editForm);
-    }
-
-    private class DriversModel extends LoadableDetachableModel<List<Driver>> {
-
-        @Override
-        protected List<Driver> load() {
-            return getTransportService().getAll(Driver.class);
-        }
-    }
-
-    private class CarsModel extends LoadableDetachableModel<List<Car>> {
-
-        @Override
-        protected List<Car> load() {
-            return getTransportService().getAll(Car.class);
-        }
     }
 
     private class DriverRenderer implements IChoiceRenderer<Driver> {

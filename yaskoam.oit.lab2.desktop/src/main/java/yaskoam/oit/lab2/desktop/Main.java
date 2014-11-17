@@ -1,7 +1,5 @@
 package yaskoam.oit.lab2.desktop;
 
-import java.util.List;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -25,14 +23,18 @@ public class Main extends Application {
         TransportService transportService = applicationContext.getBean(TransportService.class);
         AppSettings.get().setTransportService(transportService);
 
-        if (transportService.getAll(Transportation.class).isEmpty()) {
-            List<Transportation> transportations = TestDataGenerator.generateTestData();
-            transportService.saveOrUpdate(transportations);
-        }
+        generateTestDataIfNeeded();
 
         Parent root = new MainPanel();
         primaryStage.setTitle("Редактор перевозок");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+    }
+
+    private void generateTestDataIfNeeded() {
+        TransportService transportService = AppSettings.get().getTransportService();
+        if (transportService.getAll(Transportation.class).isEmpty()) {
+            transportService.saveOrUpdate(TestDataGenerator.generateTestData());
+        }
     }
 }

@@ -5,9 +5,9 @@ import org.apache.wicket.markup.html.form.Button;
 
 public class CancelButton extends Button {
 
-    private Page previousPage;
+    private Class<? extends Page> previousPage;
 
-    public CancelButton(String id, Page previousPage) {
+    public CancelButton(String id, Class<? extends Page> previousPage) {
         super(id);
 
         this.previousPage = previousPage;

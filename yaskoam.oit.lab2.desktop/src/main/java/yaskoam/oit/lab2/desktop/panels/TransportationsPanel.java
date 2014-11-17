@@ -103,7 +103,8 @@ public class TransportationsPanel extends BaseComponent {
     }
 
     public void saveNewTransportation() {
-        Date date = Date.from(newDateDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date date = newDateDatePicker.getValue() != null ?
+            Date.from(newDateDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()) : null;
         Driver driver = newDriverComboBox.getValue();
         Car car = newCarComboBox.getValue();
         double weight = UiUtils.getDoubleValue(newWeightTextField);

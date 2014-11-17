@@ -8,15 +8,16 @@ import org.apache.wicket.markup.html.form.CheckGroup;
 import org.apache.wicket.markup.html.form.CheckGroupSelector;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import yaskoam.oit.lab2.service.model.Transportation;
 import yaskoam.oit.lab2.web.BasePage;
-import yaskoam.oit.lab2.web.support.RedirectLink;
-import yaskoam.oit.lab2.web.support.RemoveEntityLink;
+import yaskoam.oit.lab2.web.TransportationsApplication;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +46,8 @@ public class TransportationsPage extends BasePage<List<Transportation>> {
         calculateCostForm.add(group);
         add(calculateCostForm);
 
-        group.add(new RedirectLink("addTransportationLink", new EditTransportationPage(TransportationsPage.this)));
+        group.add(new EditTransportationLink("addLink", Model.of(new Transportation())));
+
         group.add(new CheckGroupSelector("selectAll"));
 
         group.add(new TextField<>("rate", PropertyModel.of(this, "rate"), Double.class));
@@ -62,9 +64,8 @@ public class TransportationsPage extends BasePage<List<Transportation>> {
                 item.add(new Label("car", PropertyModel.of(item.getModel(), "car.code")));
                 item.add(new Label("weight", PropertyModel.of(item.getModel(), "weight")));
                 item.add(new Label("length", PropertyModel.of(item.getModel(), "length")));
-
-                item.add(new RedirectLink("editLink", new EditTransportationPage(item.getModel(), TransportationsPage.this)));
-                item.add(new RemoveEntityLink<>("removeLink", item.getModel()));
+                item.add(new EditTransportationLink("editLink", item.getModel()));
+                item.add(new RemoveTransportationLink<>("removeLink", item.getModel()));
             }
         };
 
@@ -72,11 +73,33 @@ public class TransportationsPage extends BasePage<List<Transportation>> {
         group.add(listView);
     }
 
-    private class TransportationsModel extends LoadableDetachableModel<List<Transportation>> {
+    private class EditTransportationLink extends Link<Transportation> {
+
+        public EditTransportationLink(String id, IModel<Transportation> model) {
+            super(id, model);
+        }
 
         @Override
-        protected List<Transportation> load() {
-            return getTransportService().getAll(Transportation.class);
+        public void onClick() {
+            setResponsePage(new EditTransportationPage(getModel()));
+        }
+    }
+
+    public class RemoveTransportationLink<T> extends Link<T> {
+
+        public RemoveTransportationLink(String id, IModel<T> model) {
+            super(id, model);
+        }
+
+        @Override
+        public void onClick() {
+            try {
+                TransportationsApplication.get().getTransportService().remove(getModelObject());
+                TransportationsPage.this.detachModels();
+            }
+            catch (Exception e) {
+                getPage().error(e.getMessage());
+            }
         }
     }
 }

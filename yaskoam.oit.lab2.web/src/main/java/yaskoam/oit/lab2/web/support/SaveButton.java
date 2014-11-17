@@ -5,9 +5,9 @@ import org.apache.wicket.markup.html.form.Button;
 
 public class SaveButton extends Button {
 
-    private Page previousPage;
+    private Class<? extends Page> previousPage;
 
-    public SaveButton(String id, Page previousPage) {
+    public SaveButton(String id, Class<? extends Page> previousPage) {
         super(id);
         this.previousPage = previousPage;
     }

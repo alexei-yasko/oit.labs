@@ -1,0 +1,19 @@
+<wicket:extend xmlns:wicket>
+
+    <form class="editForm" wicket:id="editForm">
+        <div>
+            <label for="model">Марка:</label>
+            <input id="model" type="text" wicket:id="model"/>
+        </div>
+        <div class="photo">
+            <label for="photoFileInput"><img wicket:id="photo"/></label>
+            <input id="photoFileInput" type="file" wicket:id="photoFileInput"/>
+        </div>
+
+        <div class="actionBar">
+            <input type="submit" value="Сохранить" wicket:id="saveButton">
+            <input type="submit" value="Отмена" wicket:id="cancelButton">
+        </div>
+    </form>
+
+</wicket:extend>

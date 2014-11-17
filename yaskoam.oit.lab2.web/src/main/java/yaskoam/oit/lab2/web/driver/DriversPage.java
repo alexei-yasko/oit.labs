@@ -4,61 +4,62 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.markup.repeater.data.ListDataProvider;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import yaskoam.oit.lab2.service.model.Driver;
 import yaskoam.oit.lab2.web.BasePage;
-import yaskoam.oit.lab2.web.support.RemoveEntityLink;
+import yaskoam.oit.lab2.web.TransportationsApplication;
 
 public class DriversPage extends BasePage<List<Driver>> {
 
     public DriversPage() {
         setModel(new DriversModel());
 
-        DataView<Driver> dataView = new DataView<Driver>("drivers", new DriversDataProvider(getModel())) {
+        add(new EditDriverLink("addLink", Model.of(new Driver())));
+
+        ListView<Driver> listView = new ListView<Driver>("drivers", getModel()) {
             @Override
-            protected void populateItem(Item<Driver> item) {
+            protected void populateItem(ListItem<Driver> item) {
                 item.add(new Label("code", PropertyModel.of(item.getModel(), "code")));
                 item.add(new Label("name", PropertyModel.of(item.getModel(), "name")));
-
-                item.add(new Link<Driver>("editLink", item.getModel()) {
-                    @Override
-                    public void onClick() {
-
-                    }
-                });
-
-                item.add(new RemoveEntityLink<>("removeLink", item.getModel()));
+                item.add(new EditDriverLink("editLink", item.getModel()));
+                item.add(new RemoveDriverLink<>("removeLink", item.getModel()));
             }
         };
-
-        add(dataView);
+        add(listView);
     }
 
-    private class DriversDataProvider extends ListDataProvider<Driver> {
+    private class EditDriverLink extends Link<Driver> {
 
-        private IModel<List<Driver>> driversModel;
-
-        public DriversDataProvider(IModel<List<Driver>> driversModel) {
-            this.driversModel = driversModel;
+        public EditDriverLink(String id, IModel<Driver> model) {
+            super(id, model);
         }
 
         @Override
-        protected List<Driver> getData() {
-            return driversModel.getObject();
+        public void onClick() {
+            setResponsePage(new EditDriverPage(getModel()));
         }
     }
 
-    private class DriversModel extends LoadableDetachableModel<List<Driver>> {
+    public class RemoveDriverLink<T> extends Link<T> {
+
+        public RemoveDriverLink(String id, IModel<T> model) {
+            super(id, model);
+        }
 
         @Override
-        protected List<Driver> load() {
-            return getTransportService().getAll(Driver.class);
+        public void onClick() {
+            try {
+                TransportationsApplication.get().getTransportService().remove(getModelObject());
+                DriversPage.this.detachModels();
+            }
+            catch (Exception e) {
+                getPage().error(e.getMessage());
+            }
         }
     }
 }
